@@ -3,15 +3,9 @@ import pandas as pd
 from nltk.tokenize import sent_tokenize
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+import nltk
+nltk.download('punkt')
 
-
-st.header('RAMACHANDRA COLLEGE OF ENGINEERING')
-st.title('STUDENT FEEDBACK ANALYZER')
-csv=st.file_uploader('Enter CSV')
-model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
-
-# Load the dataset
-df = pd.read_csv(csv)
 def generate_summary(teacher_feedback):
     # Tokenize the feedback into sentences
     sentences = sent_tokenize(teacher_feedback)
@@ -38,17 +32,24 @@ def generate_summary(teacher_feedback):
     # Generate summary
     summary = ' '.join(representative_sentences)
     return summary
+
+st.header('RAMACHANDRA COLLEGE OF ENGINEERING')
+st.title('STUDENT FEEDBACK ANALYZER')
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+csv=st.file_uploader('Enter CSV')
+if csv:
+    df = pd.read_csv(csv)
+# Load the dataset
 # Specify the range of teachers to consider
-start_teacher = 1
-end_teacher = 5  # Adjust as needed
-# Generate summary for each teacher in the specified range
-for i in range(start_teacher, end_teacher + 1):
-    teacher = st.text('Teacher '+str(i))
-    if teacher in df.columns and not df[teacher].isnull().all():
-        teacher_feedback = df[teacher].dropna().str.cat(sep=' ')
-        st.text("Summary of feedback for :"+teacher)
-        st.text(generate_summary(teacher_feedback))
+    start_teacher = 1
+    end_teacher = 5  # Adjust as needed
+    # Generate summary for each teacher in the specified range
+    for i in range(start_teacher, end_teacher + 1):
+        if 'Teacher '+str(i) in df.columns and not df['Teacher '+str(i)].isnull().all():
+            teacher_feedback = df['Teacher '+str(i)].dropna().str.cat(sep=' ')
+            st.text("Summary of feedback for :"+'Teacher '+str(i))
+            st.text(generate_summary(teacher_feedback))
 
-    else:
-        st.text("No feedback available for"+teacher)
-
+        else:
+            st.text("No feedback available for Teacher"+str(i))
