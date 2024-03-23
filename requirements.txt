@@ -4,4 +4,5 @@ numpy
 seaborn
 matplotlib
 nltk
-svm
+sentence_transformers
+scikit-learn
