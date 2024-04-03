@@ -45,8 +45,8 @@ if csv:
     #start_teacher = 1
     #end_teacher = 5  # Adjust as needed
     # Generate summary for each teacher in the specified range
-    for i in df.columns[4],df.columns[6],df.columns[8],df.columnns[10],df.columns[12]:
-        st.text(i)
+    for i in df.columns[4],df.columns[6],df.columns[8],df.columns[10],df.columns[12]:
+        #st.text(i)
         if i in df.columns and not df[i].isnull().all():
             teacher_feedback = df[i].dropna().str.cat(sep=' ')
             st.text("Summary of feedback for :"+i)
